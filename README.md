@@ -112,6 +112,8 @@ README.md
 
 ## How to run
 
-1. Create the environment and install dependencies: pandas, NumPy, Matplotlib, openpyxl, pyarrow, Jupyter.
+1. Create the environment and install dependencies with:
+pip install -r requirements.txt
+
 2. Place the source files in `data/raw/`.
 3. Run the cleaning notebooks first (they write to `data/processed/`), then the analysis notebooks.
