@@ -69,7 +69,8 @@ Raw files are stored unchanged in `data/raw/`. Cleaned datasets are saved to `da
 - "Sonstige" (registrations not assigned to a Bundesland) is kept for reconciliation and excluded from regional comparisons.
 - Charging stations were assigned to Bundesländer using postal codes and city/district information, with zero missing assignments. All 118,219 charging ports in the dataset have connector information.
 - Charging infrastructure is normalized three ways: per 100,000 inhabitants, per 10,000 passenger cars in stock, and per 1,000 km².
-
+- Correlations were run with Pearson and Spearman, with and without the city-states (Berlin, Hamburg, Bremen), and with a partial correlation controlling for log population density. P-values for partial correlations are approximate.
+- 
 ---
 
 ## Key findings so far
@@ -86,7 +87,11 @@ Raw files are stored unchanged in `data/raw/`. Cleaned datasets are saved to `da
 - BMW's own lineup shifted strongly toward BEVs: the BEV share of BMW's registrations rose from about 19.0% to 25.9% (+6.96 pp).
 - BMW lost ground in PHEVs on every measure.
 
-*Regional and infrastructure findings: to be added.*
+### Charging infrastructure and EV adoption
+
+![PHEV share vs AC charging density](reports/figures/phev_vs_ac_density.png)
+
+Among the 13 territorial states, PHEV share is positively associated with AC charging density (r = 0.73), and the association remains after controlling for population density (partial r = 0.68). Across all 16 states, part of the correlation reflects the city-states' high density. BEV share shows no clear association with charging density or population density. These associations are cross-sectional and do not show that AC charging causes PHEV adoption; company-car concentration is a plausible common factor.
 
 ---
 
