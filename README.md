@@ -93,6 +93,20 @@ Raw files are stored unchanged in `data/raw/`. Cleaned datasets are saved to `da
 
 Among the 13 territorial states, PHEV share is positively associated with AC charging density (r = 0.73), and the association remains after controlling for population density (partial r = 0.68). Across all 16 states, part of the correlation reflects the city-states' high density. BEV share shows no clear association with charging density or population density. These associations are cross-sectional and do not show that AC charging causes PHEV adoption; company-car concentration is a plausible common factor.
 
+### Estimated regional BMW registrations
+![Estimated BMW market share by Bundesland](reports/figures/bmw_estimated_share_by_state.png)
+
+Since KBA does not have Brand x Bundesland registrations, BMW's national Jan-Sep 2026 registrations were allocated to states by BMW-brand stock (FZ 2.4, MINI excluded), adjusted by each state's registration intensity with a parameter β ∈ [0,1]. Results are reported as the range across β, with β = 0.5 as the central value
+
+#### Robust findings
+Above the national 8.5% in every scenario: Bayern, Rheinland-Pfalz, Saarland, and Baden-Württemberg; below in every scenario: Niedersachsen, and Hamburg.
+
+#### Caveats
+  - Model estimates, not observed registrations, and not validated for BMW.
+  - Estimated shares largely reflect where BMW's existing fleet is.
+  - One β for all states; manufacturer self-registrations near BMW sites aren't modelled.
+  - An untyped stock row (≈1%) can't be split between BMW and MINI.
+
 ---
 
 ## Limitations
@@ -123,4 +137,4 @@ pip install -r requirements.txt
 ```
 
 2. Place the source files in `data/raw/`.
-3. Run the cleaning notebooks first (they write to `data/processed/`), then the analysis notebooks.
+3. Run the notebooks in numerical order (01 -> 02 -> 03)
