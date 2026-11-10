@@ -1,8 +1,8 @@
 # BMW and the German Electric Vehicle Market
 
-An exploratory data analysis of BMW's competitive position in Germany's new-car market, electric vehicle (EV) adoption across the 16 German federal states (Bundesländer), and the relationship between charging infrastructure and regional EV adoption.
+An exploratory data analysis of BMW's competitive position in Germany's new-car market, electric vehicle (EV) adoption across the 16 German federal states (Bundesländer), the relationship between charging infrastructure and regional EV adoption, and a forecast of national monthly BEV registrations.
 
-**Scope:** Germany only. **Stack:** Python, pandas, NumPy, SciPy, Matplotlib, seaborn, Jupyter Notebook.
+**Scope:** Germany only. **Stack:** Python, pandas, NumPy, SciPy, statsmodels, scikit-learn, Matplotlib, seaborn, Jupyter Notebook.
 
 ---
 
@@ -23,6 +23,7 @@ An exploratory data analysis of BMW's competitive position in Germany's new-car 
 5. How does AC and DC charging infrastructure differ across the Bundesländer?
 6. Is regional EV adoption associated with charging infrastructure density?
 7. How might BMW registrations be distributed regionally? *(model estimate)*
+8. How well can national monthly BEV registrations be forecast, compared with naive rules?
 
 ---
 
@@ -33,6 +34,36 @@ An exploratory data analysis of BMW's competitive position in Germany's new-car 
 ![National BEV and PHEV share of new registrations](reports/figures/national_ev_share_trend.png)
 
 BEV and PHEV shares of national new registrations, 2017 to September 2026, with the subsidy changes marked: the end of the PHEV subsidy and the BEV bonus cut (January 2023), the exclusion of companies (September 2023) and the end of the BEV bonus (17 December 2023).
+
+### BEV registrations forecast
+
+![Backtest of 1-month-ahead BEV forecasts](reports/figures/bev_forecast_backtest.png)
+
+A Holt-Winters model (additive trend and 12-month seasonality) was trained on national monthly BEV registrations from January 2024 to September 2026. Earlier months are excluded because the end of the BEV bonus in December 2023 caused a spike and a crash, so the market before and after behaves differently.
+
+**Backtest, January–September 2026:** rolling 1-month-ahead forecasts. Each month was forecast with a model fitted only on the months before it.
+
+| Method | MAE (BEVs per month) | MAPE |
+|---|---|---|
+| Holt-Winters | ≈ 7,400 | 11.3% |
+| Naive: last month | ≈ 12,200 | 17.7% |
+| Naive: same month last year | ≈ 24,700 | 34.7% |
+
+- Holt-Winters reduces the error of the best naive baseline by about 40%.
+- "Same month last year" is far too low every month, because BEV registrations grew strongly from 2025 to 2026.
+- Holt-Winters follows the trend but underestimates the quarter-end peaks (March, June, September).
+
+![BEV registrations forecast for October–December 2026](reports/figures/bev_forecast_q4_2026.png)
+
+**Forecast, October–December 2026** (fitted on all 33 months, with 95% prediction intervals):
+
+| Month | Forecast | 95% prediction interval |
+|---|---|---|
+| October 2026 | ≈ 93,700 | 80,500 – 106,800 |
+| November 2026 | ≈ 97,600 | 83,200 – 111,900 |
+| December 2026 | ≈ 98,500 | 82,600 – 114,400 |
+
+In 2026, the months after a quarter-end peak dropped (April, July). The model forecasts October above September without that dip, so October is the month most likely to come in lower than forecast.
 
 ### BMW vs the German market, Jan–Sep 2026 vs Jan–Sep 2025
 
@@ -151,6 +182,7 @@ Raw files are stored unchanged in `data/raw/`. Cleaned datasets are saved to `da
 - **Stock vs registrations:** the home-market analysis uses the car fleet on 1 January 2026. It shows where brands' cars are, not who leads current sales in each state.
 - **Small brands:** growth rates for low-volume brands are volatile and can be extreme.
 - **Regional BMW estimates** are model-based allocations, not observed registrations, and are not statistically validated.
+- **Forecast:** based on only 33 months, so the seasonal pattern is estimated from less than three cycles. The model uses only past BEV registrations; policy changes, new models and price changes are not included.
 
 ---
 
@@ -166,6 +198,7 @@ src/
   01_clean_charging_stations.ipynb
   02_brand_analysis.ipynb
   03_regional_analysis.ipynb
+  04_bev_forecast.ipynb
 requirements.txt
 README.md
 ```
@@ -177,4 +210,4 @@ README.md
 pip install -r requirements.txt
 ```
 2. Place the source files in `data/raw/`.
-3. Run the notebooks in numerical order: 01 → 02 → 03. Notebook 03 reads the outputs of 01 and 02.
+3. Run the notebooks in numerical order: 01 → 02 → 03 → 04. Notebook 03 reads the outputs of 01 and 02; notebook 04 reads the national monthly series saved by 02.
