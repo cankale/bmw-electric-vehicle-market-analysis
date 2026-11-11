@@ -2,7 +2,7 @@
 
 An exploratory data analysis of BMW's competitive position in Germany's new-car market, electric vehicle (EV) adoption across the 16 German federal states (Bundesländer), the relationship between charging infrastructure and regional EV adoption, and a forecast of national monthly BEV registrations.
 
-**Scope:** Germany only. **Stack:** Python, pandas, NumPy, SciPy, statsmodels, scikit-learn, Matplotlib, seaborn, Jupyter Notebook.
+**Scope:** Germany only. **Stack:** Python, pandas, NumPy, SciPy, statsmodels, scikit-learn, DuckDB (SQL), Matplotlib, seaborn, Jupyter Notebook.
 
 ---
 
@@ -142,6 +142,7 @@ Raw files are stored unchanged in `data/raw/`. Cleaned datasets are saved to `da
 - Charging infrastructure is normalized three ways: per 100,000 inhabitants, per 10,000 passenger cars in stock, and per 1,000 km².
 - Correlations were run with Pearson and Spearman, with and without the city-states (Berlin, Hamburg, Bremen), and with a partial correlation controlling for log population density. P-values for partial correlations are approximate.
 - For the home-market analysis, FZ 2.4 subtotal rows ("ZUSAMMEN") were excluded, and the BMW total was checked against its subtotal row. Every row's state values were checked to add up to the national total. Manufacturer names were merged across plant countries (for example AUDI (D) and AUDI (H); DAIMLER and MERCEDES-BENZ).
+- The headline figures (BEV market shares, BMW's rank, BMW vs market growth, charging density per state, the monthly BEV trend and the state ranking) were recomputed independently in SQL with DuckDB, directly on the processed Parquet files. Every SQL result is asserted against the pandas result (notebook 05).
 
 ---
 
@@ -199,6 +200,8 @@ src/
   02_brand_analysis.ipynb
   03_regional_analysis.ipynb
   04_bev_forecast.ipynb
+  05_sql_checks.ipynb
+  helpers.py    shared functions used by the notebooks
 requirements.txt
 README.md
 ```
@@ -210,4 +213,4 @@ README.md
 pip install -r requirements.txt
 ```
 2. Place the source files in `data/raw/`.
-3. Run the notebooks in numerical order: 01 → 02 → 03 → 04. Notebook 03 reads the outputs of 01 and 02; notebook 04 reads the national monthly series saved by 02.
+3. Run the notebooks in numerical order: 01 → 02 → 03 → 04 → 05. Notebook 03 reads the outputs of 01 and 02; notebook 04 reads the national monthly series saved by 02; notebook 05 reads the processed Parquet files from 01–03.
