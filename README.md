@@ -65,6 +65,8 @@ A Holt-Winters model (additive trend and 12-month seasonality) was trained on na
 
 In 2026, the months after a quarter-end peak dropped (April, July). The model forecasts October above September without that dip, so October is the month most likely to come in lower than forecast.
 
+**Check against actual data (KBA, published November 2026):** October 2026 had **94,086** BEV registrations. The forecast of ≈ 93,700 was off by about +390 (+0.4%), well inside the prediction interval. The expected post-peak dip did not happen in October.
+
 ### BMW vs the German market, Jan–Sep 2026 vs Jan–Sep 2025
 
 ![BMW vs competitors growth](reports/figures/bmw_vs_competitors_growth.png)
